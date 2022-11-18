@@ -1,0 +1,21 @@
+---
+- name: Create ACI Tenant
+  hosts: apic
+  gather_facts: false
+  environment:
+    ACI_HOST:  # <TODO> Use a variable to set the API host
+    ACI_USERNAME:  # <TODO> Use a variable to set the API username
+    # <TODO> Set environment variable for the API password
+    ACI_VALIDATE_CERTS:  # <TODO> Use a variable to set TLS validation
+  tasks:
+    - name: Create contract filters
+      include_tasks:  # <TODO> Include the correct task file
+      loop: "{{ tenant_info.contract_filters }}"
+      loop_control:
+        loop_var:  # <TODO> Set the name of the loop variable
+
+    - name: Create contracts
+      include_tasks: task_files/build_contracts.yml
+      loop:  # <TODO> Loop over tenant contracts
+      loop_control:
+        loop_var:  # <TODO> Set the name of the loop variable

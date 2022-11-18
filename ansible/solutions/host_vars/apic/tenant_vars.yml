@@ -1,0 +1,73 @@
+---
+tenant_info:
+  name: Development
+  vrfs:
+    - name: Server_VRF
+  bridge_domains:
+    - name: Birch_Private_Servers
+      vrf: Server_VRF
+      subnets:
+        - ip: 192.168.16.1/24
+    - name: Birch_Public_Servers
+      vrf: Server_VRF
+      subnets:
+        - ip: 192.168.18.1/24
+
+  applications:
+    - name: Birch_App
+      description: Project Birch Application Profile
+      app_epg:
+        - name: Birch_Web_Servers
+          description: Project Birch Web Servers
+          bridge_domain: Birch_Public_Servers
+          consumed_contracts:
+            - Birch_App_Services
+          provided_contracts:
+            - Birch_Web_Services
+        - name: Birch_App_Servers
+          description: Project Birch Application Servers
+          bridge_domain: Birch_Private_Servers
+          provided_contracts:
+            - Birch_App_Services
+
+  contract_filters:
+    - name: Birch_App
+      description: Project Birch application services
+      filter_entries:
+        - name: tcp_8443
+          description: App server port
+          eth_type: ip
+          ip_proto: tcp
+          dest_port: 80
+        - name: udp_19703
+          description: App server streaming data
+          eth_type: ip
+          ip_proto: udp
+          dest_port: 19703
+    - name: Birch_Web
+      description: Project Birch web services
+      filter_entries:
+        - name: tcp_443
+          description: HTTPS
+          eth_type: ip
+          ip_proto: tcp
+          dest_port: https
+        - name: tcp_80
+          description: HTTP
+          eth_type: ip
+          ip_proto: tcp
+          dest_port: 80
+
+  contracts:
+    - name: Birch_Web_Services
+      description: Project Birch Web server contract
+      subjects:
+        - subject: Birch_Web
+          filters:
+            - Birch_Web
+    - name: Birch_App_Services
+      description: Project Birch App server contract
+      subjects:
+        - subject: Birch_App
+          filters:
+            - Birch_App

@@ -1,0 +1,13 @@
+---
+- name: Create ACI Applications
+  hosts: apic
+  gather_facts: false
+  environment:
+    # <TODO> Set environment variables for APIC connectivity
+  tasks:
+    - name: Create applications
+      include_tasks:  # <TODO> Include correct task file
+      loop: "{{ tenant_info.applications }}"
+      loop_control:
+        loop_var:  # <TODO> Set loop variable name
+        label:  # <TODO> Define text output for the loop using a variable

@@ -1,0 +1,12 @@
+---
+- name: Create ACI Applications
+  hosts: apic
+  gather_facts: false
+  environment:
+    # <TODO> Set environment variables for APIC connectivity
+  tasks:
+    - name: Create applications
+      include_tasks:  # <TODO> Include correct task file
+      loop:  #  <TODO> Specify variable to loop
+      loop_control:
+        # <TODO> Set loop control parameters

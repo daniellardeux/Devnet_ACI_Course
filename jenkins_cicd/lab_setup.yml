@@ -1,0 +1,117 @@
+---
+tenants:
+  - tenant:
+      name: Sales
+    vrfs:
+      - name: Presales_VRF
+    bridge_domains:
+      - name: Presales_BD
+        vrf: Presales_VRF
+        subnets:
+          - ip: 10.0.1.254/24
+      - name: DB_BD
+        vrf: Presales_VRF
+        subnets:
+          - ip: 10.0.2.254/24
+    application_profiles:
+      - name: eCommerce
+        app_epg:
+          - name: Web_EPG
+            consumed_contracts:
+              - BasicServices_Ct
+          - name: App_EPG
+            provided_contracts:
+              - BasicServices_Ct
+          - name: DB_EPG
+    contract_filters:
+      - name: Basic_Fltr
+        filter_entries:
+          - name: ICMP
+            ether_type: ip
+            proto: icmp
+          - name: TCP22
+            ether_type: ip
+            proto: tcp
+            dest_port_from: ssh
+            dest_port_to: ssh
+            stateful: true
+    contracts:
+      - name: BasicServices_Ct
+        subjects:
+          - name: BasicServices_Subj
+            filters:
+              - Basic_Fltr
+
+  - tenant:
+      name: Development
+    vrfs:
+      - name: Server_VRF
+    bridge_domains:
+      - name: Birch_Private_Servers
+        vrf: Server_VRF
+        subnets:
+          - ip: 192.168.16.1/24
+      - name: Birch_Public_Servers
+        vrf: Server_VRF
+        subnets:
+          - ip: 192.168.18.1/24
+    application_profiles:
+      - name: Birch_App
+        description: Project Birch Application Profile
+        app_epg:
+          - name: Birch_Web_Servers
+            description: Project Birch Web Servers
+            bridge_domain: Birch_Public_Servers
+            consumed_contracts:
+              - Birch_App_Services
+            provided_contracts:
+              - Birch_Web_Services
+          - name: Birch_App_Servers
+            description: Project Birch Application Servers
+            bridge_domain: Birch_Private_Servers
+            provided_contracts:
+              - Birch_App_Services
+    contract_filters:
+      - name: Birch_App
+        description: Project Birch application services
+        filter_entries:
+          - name: tcp_8443
+            description: App server port
+            ether_type: ip
+            proto: tcp
+            dest_port_from: 80
+            dest_port_to: 80
+          - name: udp_19703
+            description: App server streaming data
+            ether_type: ip
+            proto: udp
+            dest_port_from: 19703
+            dest_port_to: 19703
+      - name: Birch_Web
+        description: Project Birch web services
+        filter_entries:
+          - name: tcp_443
+            description: HTTPS
+            ether_type: ip
+            proto: tcp
+            dest_port_from: https
+            dest_port_to: https
+          - name: tcp_80
+            description: HTTP
+            ether_type: ip
+            proto: tcp
+            dest_port_from: 80
+            dest_port_to: 80
+    contracts:
+      - name: Birch_Web_Services
+        description: Project Birch Web server contract
+        subjects:
+          - name: Birch_Web
+            filters:
+              - Birch_Web
+      - name: Birch_App_Services
+        description: Project Birch App server contract
+        subjects:
+          - name: Birch_App
+            filters:
+              - Birch_App

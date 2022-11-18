@@ -1,0 +1,17 @@
+---
+devices:
+  APIC:
+    os: apic
+    alias: uut
+    type: apic
+    connections:
+      defaults:
+        via: rest
+      rest:
+        class: rest.connector.Rest
+        host: apic
+        port: 443
+        credentials:
+          rest:
+            username: developer
+            password: 1234QWer

@@ -1,0 +1,9 @@
+---
+- name: Import playbook to create a tenant
+  # <TODO> Import correct playbook
+
+- name: Import playbook to create contracts
+  # <TODO> Import correct playbook
+
+- name: Import playbook to create application profiles and EPGs
+  # <TODO> Import correct playbook

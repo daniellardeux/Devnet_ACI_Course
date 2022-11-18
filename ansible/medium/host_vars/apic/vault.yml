@@ -1,0 +1,3 @@
+---
+vault_ansible_user:  # <TODO> Set the username for REST API authentication.
+#  <TODO> Create variable and set value for REST API password
