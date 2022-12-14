@@ -1,0 +1,10 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\host_vars",
+    "\\host_vars\\apic",
+    "\\task_files"
+  ],
+  "SelectedNode": "\\inventory.yml",
+  "PreviewInSolutionExplorer": false
+}
